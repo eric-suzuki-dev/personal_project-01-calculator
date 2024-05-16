@@ -1,7 +1,11 @@
-import Calculator from "./components/Calculator";
+import Calculator from "./components/Calculator/Calculator.jsx";
 
-function App () {
-  return <Calculator />;
-}
+const App = () =>{
+return (
+    <div>
+        <Calculator/>
+    </div>
+    );
+};
 
-export default App
+export default App;
