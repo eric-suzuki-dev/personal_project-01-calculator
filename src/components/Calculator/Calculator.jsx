@@ -5,7 +5,7 @@ import Display from "../Display/Display.jsx";
 
 const Calculator = () => {
 const [state, setState] = useState({
-    current: "0",
+    current: '0',
     operand: 0,
     operator: null,
     isNextClear: false
@@ -17,7 +17,7 @@ const [state, setState] = useState({
     };
     return (
         <div>
-            <Display />
+            <Display value={state.current} />
             <BtnPanel btnHandler={btnHandler}/>
         </div>
     );
