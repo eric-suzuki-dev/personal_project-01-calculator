@@ -1,170 +1,178 @@
 const calculate = (button, state) => {
     if (isNumberBtn(button)) {
-        return handleNumberBtn(button, state);
+      return handleNumberBtn(button, state);
     }
-
+  
     if (isOperatorBtn(button)) {
-        return handleOperatorBtn(button, state);
+      return handleOperatorBtn(button, state);
     }
-
+  
     if (isDotBtn(button)) {
-        return handleDotBtn(state);
+      return handleDotBtn(state);
     }
-
+  
     if (isDeleteBtn(button)) {
-        return handleDeleteBtn(state);
+      return handleDeleteBtn(state);
     }
-
+  
     if (isAllClearBtn(button)) {
-        return handleAllClearBtn();
+      return handleAllClearBtn();
     }
-
+  
     if (isEqualBtn(button)) {
-        return handleEqualBtn(state);
+      return handleEqualBtn(state);
     }
-
+  
     return state;
-};
-
-export default calculate;
-
-export const State = {
+  };
+  
+  export default calculate;
+  
+  export const State = {
     current: '0',
     operand: 0,
     operator: null,
     isNextClear: false,
-};
-
-function isNumberBtn(button) {
+  };
+  
+  function isNumberBtn(button) {
     return (
-        button === '0' ||
-        button === '1' ||
-        button === '2' ||
-        button === '3' ||
-        button === '4' ||
-        button === '5' ||
-        button === '6' ||
-        button === '7' ||
-        button === '8' ||
-        button === '9'
+      button === '0' ||
+      button === '1' ||
+      button === '2' ||
+      button === '3' ||
+      button === '4' ||
+      button === '5' ||
+      button === '6' ||
+      button === '7' ||
+      button === '8' ||
+      button === '9'
     );
-}
-
-function handleNumberBtn(button, state) {
+  }
+  
+  function handleNumberBtn(button, state) {
     if (state.current === '0' || state.isNextClear) {
-        return {
-            current: button,
-            operand: state.operand,
-            operator: state.operator,
-            isNextClear: false,
-        };
-    }
-    return {
-        current: state.current + button,
+      return {
+        current: button,
         operand: state.operand,
         operator: state.operator,
-        isNextClear: false
-    };
-}
-
-function isOperatorBtn(button) {
-    return button === '+' || button === '-';
-}
-
-function handleOperatorBtn(button, state) {
-    if (state.operator === null) {
-        return {
-            current: state.current,
-            operand: parseFloat(state.current),
-            operator: button,
-            isNextClear: true
-        };
+        isNextClear: false,
+      };
     }
-
-    const nextValue = operate(state);
     return {
-        current: `${nextValue}`,
-        operand: nextValue,
+      current: state.current + button,
+      operand: state.operand,
+      operator: state.operator,
+      isNextClear: false
+    };
+  }
+  
+  function isOperatorBtn(button) {
+    return button === '+' || button === '-' || button === '*' || button === '/' || button === '%';
+  }
+  
+  function handleOperatorBtn(button, state) {
+    if (state.operator === null) {
+      return {
+        current: state.current,
+        operand: parseFloat(state.current),
         operator: button,
         isNextClear: true
+      };
+    }
+  
+    const nextValue = operate(state);
+    return {
+      current: `${nextValue}`,
+      operand: nextValue,
+      operator: button,
+      isNextClear: true
     };
-}
-
-function isDotBtn(button) {
+  }
+  
+  function isDotBtn(button) {
     return button === '.';
-}
-
-function handleDotBtn(state) {
+  }
+  
+  function handleDotBtn(state) {
     if (state.current.indexOf('.') !== -1) {
-        return state;
+      return state;
     }
-
+  
     return {
-        current: state.current + '.',
-        operand: state.operand,
-        operator: state.operator,
-        isNextClear: false
+      current: state.current + '.',
+      operand: state.operand,
+      operator: state.operator,
+      isNextClear: false
     };
-}
-
-function isDeleteBtn(button) {
+  }
+  
+  function isDeleteBtn(button) {
     return button === 'D';
-}
-
-function handleDeleteBtn(state) {
+  }
+  
+  function handleDeleteBtn(state) {
     if (state.current.length === 1) {
-        return {
-            current: '0',
-            operand: state.operand,
-            operator: state.operator,
-            isNextClear: false
-        };
-    }
-    return {
-        current: state.current.substring(0, state.current.length - 1),
+      return {
+        current: '0',
         operand: state.operand,
         operator: state.operator,
         isNextClear: false
-    };
-}
-
-function isAllClearBtn(button) {
-    return button === 'AC';
-}
-
-function handleAllClearBtn() {
+      };
+    }
     return {
-        current: '0',
-        operand: 0,
-        operator: null,
-        isNextClear: false
+      current: state.current.substring(0, state.current.length - 1),
+      operand: state.operand,
+      operator: state.operator,
+      isNextClear: false
     };
-}
-
-function isEqualBtn(button) {
+  }
+  
+  function isAllClearBtn(button) {
+    return button === 'AC';
+  }
+  
+  function handleAllClearBtn() {
+    return {
+      current: '0',
+      operand: 0,
+      operator: null,
+      isNextClear: false
+    };
+  }
+  
+  function isEqualBtn(button) {
     return button === '=';
-}
-
-function handleEqualBtn(state) {
+  }
+  
+  function handleEqualBtn(state) {
     if (state.operator === null) {
-        return state;
+      return state;
     }
     const nextValue = operate(state);
     return {
-        current: `${nextValue}`,
-        operand: 0,
-        operator: null,
-        isNextClear: true
+      current: `${nextValue}`,
+      operand: 0,
+      operator: null,
+      isNextClear: true
     };
-}
-
-function operate(state) {
+  }
+  
+  function operate(state) {
     const current = parseFloat(state.current);
-    if (state.operator === '+') {
+    switch (state.operator) {
+      case '+':
         return state.operand + current;
-    }
-    if (state.operator === '-') {
+      case '-':
         return state.operand - current;
+      case '*':
+        return state.operand * current;
+      case '/':
+        return state.operand / current;
+      case '%':
+        return state.operand * (current / 100);
+      default:
+        return current;
     }
-    return current;
-}
+  }
+  

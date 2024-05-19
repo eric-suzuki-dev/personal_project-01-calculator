@@ -1,0 +1,9 @@
+.btnPanel button{
+        width: 80px;
+        height: 80px;
+}
+
+.btnPanel .zero{
+        width: 160px;
+        height: 80px;
+}
