@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import "./Display.css"
 
 const Display = ({ value }) => {
   return (
-    <div>
+    <div className='display'>
       {value}
     </div>
   );
