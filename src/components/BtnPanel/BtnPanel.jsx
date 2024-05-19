@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import "./BtnPanel.css";
 
 const BtnPanel = ({ btnHandler }) => {
   return (
-    <div>
+    <div className='btnPanel'>
       <div>
         <button onClick={() => btnHandler("7")}>7</button>
         <button onClick={() => btnHandler("8")}>8</button>
